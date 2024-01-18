@@ -8,4 +8,5 @@ cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak;
 reflector --download-timeout 60 --country Thailand,Singapore --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist;
 pacman -Sy;
 pacstrap /mnt base base-devel linux linux-firmware sudo micro ntfs-3g networkmanager;
-genfstab -U /mnt >> /mnt/etc/fstab &&arch-chroot /mnt;
+genfstab -U /mnt >> /mnt/etc/fstab;
+arch-chroot /mnt;
