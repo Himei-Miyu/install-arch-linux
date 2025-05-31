@@ -19,6 +19,7 @@ lsblk
 read -p "`logInfo \"Location disk: \"`" DATA[DISK]
 logWarn "This will erase ${DATA[DISK]} !!!"
 logLoop "Do you want to continue? [y/N]: "
+timedatectl set-ntp true;
 parted -s "${DATA[DISK]}" \
   mklabel gpt \
   mkpart ESP fat32 1MiB 513MiB \
