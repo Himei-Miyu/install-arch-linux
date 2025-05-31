@@ -7,16 +7,16 @@ logWarn() { echo -e "[\e[93mWARN\e[0m] \e[93m$@\e[0m"; }
 logError() { echo -e "[\e[91mERROR\e[0m] \e[91m$@\e[0m"; }
 logLoop() {
   while true; do
-    case "$1" in
+    read -n1 -p "`logInfo \"$@\"`" DATA[isYes]
+    case "${DATA[isYes]}" in
       [Yy]) break ;;
       [Nn]) exit 1 ;;
-      *) logWarn "Please specify y or n" ;;
+      *) logWarn "Please enter y or n" ;;
     esac
   done
 }
 lsblk
 read -p "Location disk: " DATA[DISK]
 logWarn "This will erase ${DATA[DISK]} !!!"
-read -p "`logInfo \"Do you want to continue? [y/N]: \"`" DATA[isYes]
-logLoop ${DATA[isYes]}
+logLoop "Do you want to continue? [y/N]: "
 logInfo "processing..."
