@@ -7,7 +7,7 @@ logWarn() { echo -e "[\e[93mWARN\e[0m] \e[93m$@\e[0m"; }
 logError() { echo -e "[\e[91mERROR\e[0m] \e[91m$@\e[0m"; }
 logLoop() {
   while true; do
-    read -n1 -p "`logInfo \"$@\"`" DATA[isYes]
+    read -n1 -p "`logInfo \"$@\"`\n" DATA[isYes]
     case "${DATA[isYes]}" in
       [Yy]) break ;;
       [Nn]) exit 1 ;;
