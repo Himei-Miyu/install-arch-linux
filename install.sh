@@ -16,7 +16,20 @@ logLoop() {
   done
 }
 lsblk
-read -p "Location disk: " DATA[DISK]
+read -p "`logInfo \"Location disk: \"`" DATA[DISK]
 logWarn "This will erase ${DATA[DISK]} !!!"
 logLoop "Do you want to continue? [y/N]: "
-logInfo "processing..."
+parted -s "${DATA[DISK]}" \
+  mklabel gpt \
+  mkpart ESP fat32 1MiB 513MiB \
+  set 1 esp on \
+  mkpart primary linux-swap 513MiB 4.5GiB \
+  mkpart primary ext4 4.5GiB 100%
+[[ "${DATA[DISK]}" =~ [0-9]$ ]] && DATA[DISK_PART]="${DATA[DISK]}p" || DATA[DISK_PART]="${DATA[DISK]}"
+mkfs.fat -F32 "${DATA[DISK_PART]}1"
+mkswap "${DATA[DISK_PART]}2"
+mkfs.ext4 "${DATA[DISK_PART]}3"
+swapon "${DATA[DISK_PART]}2"
+mount "${DATA[DISK_PART]}3" /mnt
+mkdir -p /mnt/boot/efi
+mount "${DATA[DISK_PART]}1" /mnt/boot/efi
