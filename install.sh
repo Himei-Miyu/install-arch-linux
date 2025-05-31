@@ -8,9 +8,9 @@ logError() { echo -e "[\e[91mERROR\e[0m] \e[91m$@\e[0m"; }
 logLoop() {
   while true; do
     case "$1" in
-      [Yy]) break;;
-      [Nn]) exit 1;;
-      *) continue;;
+      [Yy]) break ;;
+      [Nn]) exit 1 ;;
+      *) logWarn "Please specify y or n" ;;
     esac
   done
 }
